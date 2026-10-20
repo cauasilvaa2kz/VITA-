@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Vita+{% endblock %} | Saúde e bem-estar</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('index') }}"><span class="brand-icon">✚</span><span>vita<span class="brand-plus">+</span><small>SAÚDE & BEM-ESTAR</small></span></a>
+  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Abrir menu">☰</button>
+  <nav id="main-nav">
+    <a href="{{ url_for('index') }}">Visão geral</a><a href="{{ url_for('food') }}">Alimentação</a>
+    <a href="{{ url_for('measures') }}">Medidas</a><a href="{{ url_for('routine') }}">Rotina</a>
+    <a href="{{ url_for('planning') }}">Planejamento</a><a href="{{ url_for('reports') }}">Relatórios</a>
+  </nav>
+  <a class="profile-link" href="{{ url_for('profile') }}">♙ <span>Meu perfil</span></a>
+</header>
+<main class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}{% for category,message in messages %}<div class="alert {{ category }}">{{ message }}</div>{% endfor %}{% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+  <footer>Vita+ <span>•</span> Um passo de cada vez. Projeto educativo de saúde e bem-estar.</footer>
+</main>
+</body></html>

@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block title %}Meu perfil{% endblock %}
+{% block content %}
+<div class="page-title"><span class="eyebrow">PERSONALIZAÇÃO</span><h1>Meu perfil</h1><p>Conte um pouco sobre você para organizar sua experiência.</p></div>
+<form class="panel form-panel" method="post">
+<div class="form-grid">
+<label>Nome ou apelido<input name="name" maxlength="60" required value="{{ profile.name if profile else '' }}" placeholder="Como podemos chamar você?"></label>
+<label>Idade<input type="number" name="age" min="1" max="120" required value="{{ profile.age if profile else 17 }}"></label>
+<label>Altura (cm)<input type="number" name="height" min="50" max="250" step=".1" required value="{{ profile.height if profile else 170 }}"></label>
+<label>Peso atual (kg)<input type="number" name="weight" min="2" max="400" step=".1" required value="{{ profile.weight if profile else 65 }}"></label>
+<label>Objetivo<select name="goal">{% for g in ['Organizar a alimentação','Manter hábitos saudáveis','Melhorar o condicionamento','Acompanhar medidas'] %}<option {% if profile and profile.goal==g %}selected{% endif %}>{{ g }}</option>{% endfor %}</select></label>
+<label>Nível de atividade<select name="activity">{% for g in ['Baixo','Leve','Moderado','Alto'] %}<option {% if profile and profile.activity==g %}selected{% endif %}>{{ g }}</option>{% endfor %}</select></label>
+<label>Preferências alimentares<input name="preferences" value="{{ profile.preferences if profile else '' }}" placeholder="Ex.: vegetariana"></label>
+<label>Restrições ou alergias informadas<input name="restrictions" value="{{ profile.restrictions if profile else '' }}" placeholder="Ex.: lactose"></label>
+</div><p class="form-note">Preencha apenas o que se sentir confortável em informar. Os dados ficam armazenados localmente neste computador.</p><button class="btn btn-primary" type="submit">Salvar perfil</button>
+</form>
+{% endblock %}

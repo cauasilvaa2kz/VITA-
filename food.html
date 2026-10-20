@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% block title %}Alimentação{% endblock %}
+{% block content %}
+<div class="page-title"><span class="eyebrow">NUTRIÇÃO NO SEU DIA A DIA</span><h1>Alimentação</h1><p>Registre o que comeu e acompanhe estimativas nutricionais.</p></div>
+<section class="metric-grid four">
+{% for label,value,unit in [('Calorias',totals.kcal,'kcal'),('Proteínas',totals.protein,'g'),('Carboidratos',totals.carbs,'g'),('Gorduras',totals.fat,'g')] %}<article class="metric-card compact"><span>{{ label }}</span><strong>{{ "%.1f"|format(value) }} <small>{{ unit }}</small></strong></article>{% endfor %}
+</section>
+<section class="content-grid">
+<article class="panel"><div class="panel-head"><div><span class="eyebrow">NOVO REGISTRO</span><h3>Adicionar alimento</h3></div><span class="metric-icon green">＋</span></div>
+<form method="post" class="stack-form">
+<label>Data<input type="date" name="day" value="{{ day }}" required></label>
+<label>Tipo de refeição<select name="kind">{% for k in ['Café da manhã','Almoço','Jantar','Lanche'] %}<option>{{ k }}</option>{% endfor %}</select></label>
+<label>Alimento<select name="food_id">{% for f in foods %}<option value="{{ f.id }}">{{ f.name }} — {{ f.kcal }} kcal/100 g</option>{% endfor %}</select></label>
+<label>Quantidade (gramas)<input type="number" name="quantity" min="1" max="3000" value="100" step="1" required></label>
+<button class="btn btn-primary" type="submit">Adicionar ao diário</button>
+</form></article>
+<article class="panel wide"><div class="panel-head"><div><span class="eyebrow">SEU HISTÓRICO</span><h3>Itens do dia</h3></div><form method="get"><input aria-label="Escolher data" type="date" name="day" value="{{ day }}" onchange="this.form.submit()"></form></div>
+{% if meals %}<div class="table-wrap"><table><thead><tr><th>Alimento</th><th>Refeição</th><th>Qtd.</th><th>Energia</th><th></th></tr></thead><tbody>{% for m in meals %}<tr><td>{{ m.food_name }}<small class="table-sub">{{ "%.1f"|format(m.protein) }} g proteína</small></td><td>{{ m.kind }}</td><td>{{ "%.0f"|format(m.quantity) }} g</td><td>{{ "%.0f"|format(m.kcal) }} kcal</td><td><form method="post" action="{{ url_for('delete_meal',meal_id=m.id) }}" onsubmit="return confirm('Excluir este registro?')"><button class="icon-button" title="Excluir">×</button></form></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty"><div>🍽️</div><strong>Nenhum registro nesta data</strong><p>Adicione um alimento para começar seu histórico.</p></div>{% endif %}
+</article></section>
+<p class="disclaimer">Valores aproximados por 100 g. O preparo, a marca e a variedade do alimento alteram os valores nutricionais.</p>
+{% endblock %}
